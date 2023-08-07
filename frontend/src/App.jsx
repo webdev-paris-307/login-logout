@@ -5,8 +5,8 @@ import HomePage from "./pages/HomePage"
 import LoginPage from "./pages/LoginPage"
 import SignupPage from "./pages/SignupPage"
 import Favoriting from "./pages/Favoriting"
-import UserFavorties from "./pages/UserFavorties"
-import { useState, useEffect } from "react"
+import IsLoggedIn from "./components/IsLoggedIn"
+import { useState } from "react"
 
 function App() {
 	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
@@ -29,8 +29,15 @@ function App() {
 				<Route path="/" element={<HomePage />} />
 				<Route path="/login" element={<LoginPage storeUser={storeUser} />} />
 				<Route path="/signup" element={<SignupPage />} />
-				<Route path="/stuff" element={<Favoriting user={user} />} />
-				<Route path="/user-favorites" element={<UserFavorties />} />
+				{/* Added a Route protection, see IsLoggedIn component for more info */}
+				<Route
+					path="/favorites"
+					element={
+						<IsLoggedIn user={user}>
+							<Favoriting user={user} />
+						</IsLoggedIn>
+					}
+				/>
 			</Routes>
 		</>
 	)

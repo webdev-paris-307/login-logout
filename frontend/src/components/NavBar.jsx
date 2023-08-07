@@ -6,7 +6,7 @@ function NavBar({ removeUser }) {
 	return (
 		<nav>
 			<NavLink to={"/"}>Home</NavLink>
-			<NavLink to={"/stuff"}>Things with arrays and fav's</NavLink>
+			<NavLink to={"/favorites"}>Favorites</NavLink>
 			{!user && (
 				<>
 					<NavLink to={"/signup"}>Signup</NavLink>
