@@ -3,6 +3,8 @@ import axios from "axios"
 function UserFavorties() {
 	const [favorites, setFavorites] = useState(null)
 
+	// This page should be accessible only to logged in Users
+
 	const fetchFavorites = async () => {
 		try {
 			const res = await axios.get(
@@ -10,7 +12,6 @@ function UserFavorties() {
 					JSON.parse(localStorage.getItem("user")).id
 				}&_expand=fruit`
 			)
-			console.log(res.data)
 			setFavorites(res.data)
 		} catch (error) {
 			console.log(error)

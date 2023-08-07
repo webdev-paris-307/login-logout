@@ -9,9 +9,10 @@ function Favoriting({ user }) {
 	const fetchFavorites = async () => {
 		try {
 			const response = await axios.get(
-				`http://localhost:3000/favorites?userId=${user.id}`
+				`http://localhost:3000/favorites?userId=${user.id}&_expand=fruit`
 			)
-			setUserFavorites(response.data.map((fav) => fav.fruitId))
+			console.log(response.data)
+			setUserFavorites(response.data)
 		} catch (error) {
 			console.log(error)
 		}
@@ -28,6 +29,16 @@ function Favoriting({ user }) {
 				fruitId: fruitId,
 			}
 			await axios.post("http://localhost:3000/favorites", newFavorite)
+			fetchFavorites()
+		} catch (error) {
+			console.log(error.message)
+		}
+	}
+
+	async function removeFavorites(favoriteId) {
+		try {
+			await axios.delete("http://localhost:3000/favorites/" + favoriteId)
+			fetchFavorites()
 		} catch (error) {
 			console.log(error.message)
 		}
@@ -40,14 +51,19 @@ function Favoriting({ user }) {
 	return (
 		<div>
 			<h2>Favoriting</h2>
-			{fruits.map((fruit) => (
-				<p key={fruit.id}>
-					{fruit.name}{" "}
-					<button onClick={() => addToFavorites(fruit.id)}>
-						{userFavorites.includes(fruit.id) ? "❤️" : "💔"}
-					</button>{" "}
-				</p>
-			))}
+			{fruits.map((fruit) => {
+				const isFav = userFavorites.find((fav) => fav.fruitId === fruit.id)
+				return (
+					<p key={fruit.id}>
+						{fruit.name}{" "}
+						{isFav ? (
+							<button onClick={() => removeFavorites(isFav.id)}>❤️</button>
+						) : (
+							<button onClick={() => addToFavorites(fruit.id)}>💔</button>
+						)}
+					</p>
+				)
+			})}
 		</div>
 	)
 }
